@@ -14,7 +14,7 @@ exports.registerActive = async(ctx) => {
 }
 
 exports.getActiveList = async(ctx) => {
-  let {page, limit, access, sort, content} = ctx.query;
+  let {page, limit, access, sort, content, searchIf} = ctx.query;
   const currentPage = page? Number(page): 1;
   limit = limit? Number(limit): 100;
   const skipnum = (currentPage - 1) * limit;
@@ -25,6 +25,11 @@ exports.getActiveList = async(ctx) => {
     conf.adminId = user._id
   };
   if (content) conf.title = {$regex: new RegExp(content, 'ig')};
+  if (searchIf && (searchIf = JSON.parse(searchIf))){
+    const { _id, searchContent } = searchIf;
+    if (_id) conf.adminId = _id;
+    if (searchContent) conf.title = {$regex: new RegExp(searchContent, 'ig')}
+  }
   const list = await Active
                       .find(conf)
                       .sort(sort? sort: {_id: -1})
@@ -35,7 +40,15 @@ exports.getActiveList = async(ctx) => {
 }
 
 exports.updateActive = async(ctx) => {
-  const {_id, title, brief, imageUrl, isSignInfo, list, status} = ctx.request.body;
-  await Active.update({_id}, { title, brief, imageUrl, isSignInfo, list, status });
+  const {_id, title, brief, imageUrl, isSignInfo, list, status, star, sort} = ctx.request.body;
+  await Active.update({_id}, { title, brief, imageUrl, isSignInfo, list, status, star, sort});
   ctx.body = {StatusCode: 200000, msg: '更新成功'}
+}
+
+exports.delectActive = async(ctx) => {
+  const {_id} = ctx.params;
+  const user = await isPassToken(ctx);
+  if (!user) return;
+  await Active.remove({_id});
+  ctx.body = {StatusCode: 200000, msg: '活动删除成功'}
 }

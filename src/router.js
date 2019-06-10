@@ -12,12 +12,13 @@ router
       .post('admin/register', admin.createAdmin)
       .get('admin/list/:limit', admin.getAdminList)
       .put('admin/update', admin.update)
-      .delete('admin/delete', admin.delete)
+      .delete('admin/delete/:_id', admin.delete)
       
 router
       .post('admin/active', active.registerActive)
       .get('admin/active_list', active.getActiveList)
       .put('admin/active_update', active.updateActive)
+      .delete('admin/active_delect/:_id', active.delectActive)
 
 // 上传图像
 router

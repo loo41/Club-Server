@@ -62,7 +62,7 @@ exports.update = async(ctx) => {
 }
 
 exports.delete = async(ctx) => {
-  const {_id} = ctx.query;
+  const {_id} = ctx.params;
   const user = await isPassToken(ctx);
   if (!user) return;
   await Admin.remove({_id});
@@ -72,5 +72,5 @@ exports.delete = async(ctx) => {
     des: '管理员被删除'
   })
   await recover.save()
-  ctx.body = {StatusCode: 200000, msg: '删除成功'}
+  ctx.body = {StatusCode: 200000, msg: '管理员删除成功'}
 }
