@@ -27,7 +27,7 @@ exports.createAdmin = async(ctx) => {
     clubName, head_thumb
   });
   await admin.save();
-  ctx.body = {StatusCode: 20000, msg: '注册成功'};
+  ctx.body = {StatusCode: 200000, msg: '注册成功'};
 }
 
 exports.getAdminList = async(ctx) => {
@@ -50,7 +50,7 @@ exports.getAdminList = async(ctx) => {
                       .skip(skipnum)
                       .limit(limit);
   let total = await Admin.count(conf);
-  ctx.body = {code: 200, list, total};
+  ctx.body = {StatusCode: 200000, list, total};
 }
 
 exports.update = async(ctx) => {
@@ -58,7 +58,7 @@ exports.update = async(ctx) => {
   await Admin.update({_id}, {
     access, account, password, clubName, head_thumb, sort, star
   })
-  ctx.body = {StatusCode: 20000, msg: '更新成功'}
+  ctx.body = {StatusCode: 200000, msg: '更新成功'}
 }
 
 exports.delete = async(ctx) => {
@@ -72,5 +72,5 @@ exports.delete = async(ctx) => {
     des: '管理员被删除'
   })
   await recover.save()
-  ctx.body = {StatusCode: 20000, msg: '删除成功'}
+  ctx.body = {StatusCode: 200000, msg: '删除成功'}
 }

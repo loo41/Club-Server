@@ -16,11 +16,13 @@ router
       
 router
       .post('admin/active', active.registerActive)
+      .get('admin/active_list', active.getActiveList)
+      .put('admin/active_update', active.updateActive)
 
 // 上传图像
 router
       .post('admin/upload', upload.single('head_thumb'), (ctx) => {
-        ctx.body = {StatusCode: 20000, path: config.get('basePath') + '/' + ctx.req.file.filename}
+        ctx.body = {StatusCode: 200000, path: config.get('basePath') + '/' + ctx.req.file.filename}
       }) 
 
 
