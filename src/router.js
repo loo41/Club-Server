@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const config = require('config');
 
-const { admin, active, Log, Mongo } = require('./controller');
+const { admin, active, Log, Mongo, Banner } = require('./controller');
 const { upload } = require('./utils/upload');
 
 const router = new Router({prefix: '/'});
@@ -16,9 +16,9 @@ router
       
 router
       .post('admin/active', active.registerActive)
-      .get('admin/active_list', active.getActiveList)
-      .put('admin/active_update', active.updateActive)
-      .delete('admin/active_delect/:_id', active.delectActive)
+      .get('admin/active', active.getActiveList)
+      .put('admin/active', active.updateActive)
+      .delete('admin/active/:_id', active.delectActive)
 
 router
       .get('admin/log', Log.logList)
@@ -29,11 +29,17 @@ router
       .post(`admin/backups`, Mongo.backups)
       .delete('admin/backups/:_id/:path', Mongo.delectFile)
 
+router
+      .get('admin/banner', Banner.bannerList)
+      .delete('admin/banner/:_id', Banner.bannerDel)
+      .put('admin/banner', Banner.updateBanner)
+
 // 上传图像
 router
       .post('admin/upload', upload.single('head_thumb'), (ctx) => {
         ctx.body = {StatusCode: 200000, path: config.get('basePath') + '/' + ctx.req.file.filename}
-      }) 
+      })
+      .post('admin/uploadBannerImg', upload.single('head_thumb'), Banner.uploadBannner)
 
 
 module.exports = router

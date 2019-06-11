@@ -6,13 +6,13 @@ exports.logList = async(ctx) => {
   const pageSize = 10;
   const currentPage = page;
   const skipnum = (currentPage - 1) * pageSize;
-  let data = await Log
+  let list = await Log
                       .find({})
                       .sort({_id: -1})
                       .skip(skipnum)
                       .limit(pageSize)
   let total = await Log.count();
-  ctx.body = {StatusCode: 200000, data, total};
+  ctx.body = {StatusCode: 200000, list, total};
 }
 
 exports.delLog = async(ctx) => {

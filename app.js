@@ -17,6 +17,7 @@ mongoose.set('useCreateIndex', true);
 
 app
   .use(logger('":method :url" :status :res[content-length] ":referrer" ":user-agent"'))
+  .use(error())
   .use(static(`${__dirname}/static`))
   .use(static(`${__dirname}/databak`))
   .use(koaBody())

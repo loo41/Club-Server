@@ -10,19 +10,23 @@ exports.creatToken = async (Options) => {
 }
 
 exports.isPassToken = async (ctx, Token) => {
-  let token = Token || ctx.headers.token 
-              || ctx.query.token
-              || ctx.header.token
-              || ctx.request.body.token
-              || ctx.body.token;
-  if (!token) {
+  try {
+    let token = Token || ctx.headers.token 
+                || ctx.query.token
+                || ctx.header.token
+                || ctx.request.body.token
+                || ctx.body.token;
+    if (!token) {
+      ctx.body = {StatusCode: 700002, msg: '用户不存在'};
+      return false;
+    }
+    let user = jwt.decode(token, config.get('secret'), 'HS256');
+    if (user.exp + (2 * 60 * 1000) < Date.now()) {
+      ctx.body = {StatusCode: 700002, msg: 'token过期'};
+      return false;
+    }
+    return user;
+  } catch (e) {
     ctx.body = {StatusCode: 700002, msg: '用户不存在'};
-    return false;
   }
-  let user = jwt.decode(token, config.get('secret'), 'HS256');
-  if (user.exp + (2 * 60 * 1000) < Date.now()) {
-    ctx.body = {StatusCode: 700002, msg: 'token过期'};
-    return false;
-  }
-  return user;
 }

@@ -3,6 +3,7 @@ const Recover = require('./recover');
 const Active = require('./active');
 const Log = require('./log');
 const Mongo = require('./mongo');
+const Banner = require('./banner');
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
   Recover,
   Active,
   Log,
-  Mongo
+  Mongo,
+  Banner
 }
