@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const config = require('config');
 
-const { admin, active } = require('./controller');
+const { admin, active, Log, Mongo } = require('./controller');
 const { upload } = require('./utils/upload');
 
 const router = new Router({prefix: '/'});
@@ -19,6 +19,15 @@ router
       .get('admin/active_list', active.getActiveList)
       .put('admin/active_update', active.updateActive)
       .delete('admin/active_delect/:_id', active.delectActive)
+
+router
+      .get('admin/log', Log.logList)
+      .delete('admin/log/:_id', Log.delLog)
+
+router
+      .get(`admin/backups`, Mongo.dbList)
+      .post(`admin/backups`, Mongo.backups)
+      .delete('admin/backups/:_id/:path', Mongo.delectFile)
 
 // 上传图像
 router

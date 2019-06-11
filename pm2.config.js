@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
-      name: "wx-youngon-server",
-      script: "./bin/www",
+      name: "zhaoxin",
+      script: "./bin/www.js",
       watch: false,
       instance_var: "INSTANCE_ID",
       log_file: __dirname + "/log/log.log",

@@ -1,6 +1,8 @@
 
 {
   "mongodb": "mongodb://127.0.0.1:27017/zhaoxin",
+  "host": "127.0.0.1",
+  "db": "zhaoxin",
   "secret": "Youngon",
   "basePath": "http://127.0.0.1:3000"
 }

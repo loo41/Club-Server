@@ -13,10 +13,12 @@ const app = new koa();
 
 mongoose.connect(config.get('mongodb'), { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
 
 app
   .use(logger('":method :url" :status :res[content-length] ":referrer" ":user-agent"'))
   .use(static(`${__dirname}/static`))
+  .use(static(`${__dirname}/databak`))
   .use(koaBody())
   .use(cors())
   .use(router.routes())

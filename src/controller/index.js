@@ -1,6 +1,8 @@
-const { admin, active } = require('./admin');
+const { admin, active, Log, Mongo } = require('./admin');
 
 module.exports = {
   admin,
-  active
+  active,
+  Log,
+  Mongo
 }
