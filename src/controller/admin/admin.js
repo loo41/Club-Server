@@ -48,7 +48,14 @@ exports.getAdminList = async(ctx) => {
                       .find(conf)
                       .sort({_id: -1})
                       .skip(skipnum)
-                      .limit(limit);
+                      .limit(limit)
+                      .map(res => {
+                        res = res.map((item) => {
+                          item.password = Date.now()
+                          return item
+                        })
+                        return res
+                      });
   let total = await Admin.count(conf);
   ctx.body = {StatusCode: 200000, list, total};
 }
