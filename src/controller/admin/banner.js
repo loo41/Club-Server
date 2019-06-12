@@ -8,6 +8,7 @@ exports.uploadBannner = async(ctx) => {
   if (!user) return;
   let banner = new Banner({
     publisher: access,
+    publisher_id: user._id,
     bannerPath: config.get('basePath') + '/' + ctx.req.file.filename
   })
   await banner.save()
@@ -18,7 +19,10 @@ exports.bannerList = async(ctx) => {
   let {access} = ctx.query;
   const user = await isPassToken(ctx);
   if (!user) return;
-  const list = await Banner.find({publisher: access? access: user.access[0]})
+  const list = await Banner.find({
+    publisher: access? access: user.access[0],
+    publisher_id: user._id
+  })
   ctx.body = {StatusCode: 200000, list}
 }
 

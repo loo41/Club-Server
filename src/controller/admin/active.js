@@ -3,11 +3,11 @@ const { creatToken, isPassToken } = require('../../utils/token');
 
 
 exports.registerActive = async(ctx) => {
-  const {title, brief, imageUrl, isSignInfo, list, status} = ctx.request.body;
+  const {title, brief, imageUrl, isSignInfo, list, status, limit} = ctx.request.body;
   const user = await isPassToken(ctx);
   if (!user) return;
   let active = new Active({
-    title, brief, imageUrl, isSignInfo, list, status, adminId: user._id
+    title, brief, imageUrl, isSignInfo, list, status, limit, adminId: user._id
   });
   await active.save()
   ctx.body = {StatusCode: 200000}
@@ -40,8 +40,8 @@ exports.getActiveList = async(ctx) => {
 }
 
 exports.updateActive = async(ctx) => {
-  const {_id, title, brief, imageUrl, isSignInfo, list, status, star, sort} = ctx.request.body;
-  await Active.update({_id}, { title, brief, imageUrl, isSignInfo, list, status, star, sort});
+  const {_id, title, brief, imageUrl, isSignInfo, list, status, star, sort, limit} = ctx.request.body;
+  await Active.update({_id}, { title, brief, imageUrl, isSignInfo, list, status, star, sort, limit});
   ctx.body = {StatusCode: 200000, msg: '更新成功'}
 }
 

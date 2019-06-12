@@ -14,8 +14,8 @@ exports.isPassToken = async (ctx, Token) => {
     let token = Token || ctx.headers.token 
                 || ctx.query.token
                 || ctx.header.token
-                || ctx.request.body.token
-                || ctx.body.token;
+                || ctx.request.body.token;
+    console.log(token)
     if (!token) {
       ctx.body = {StatusCode: 700002, msg: '用户不存在'};
       return false;
@@ -27,6 +27,7 @@ exports.isPassToken = async (ctx, Token) => {
     }
     return user;
   } catch (e) {
+    console.log(e)
     ctx.body = {StatusCode: 700002, msg: '用户不存在'};
   }
 }

@@ -12,6 +12,7 @@ const Schema = moogose.Schema;
 
 const BannerSchema = new Schema({
   publisher: {type: String, index: true},
+  publisher_id: {type: Schema.Types.ObjectId, ref: 'admin', index: true},
   bannerPath: String,
   sort: {type: Number, default: 1, index: true},
   date: {type: Date, default: Date.now},
