@@ -12,7 +12,9 @@ const error = require(`${path.resolve(__dirname, 'middleware/error')}`);
 
 const app = new koa();
 
-mongoose.connect(`mongodb://${config.get('host')}:${config.get('port')}/${config.get('db')}`, { useNewUrlParser: true });
+mongoose.connect(`mongodb://${config.get('host')}:${config.get('port')}/${config.get('db')}`, {
+  useNewUrlParser: true 
+});
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 

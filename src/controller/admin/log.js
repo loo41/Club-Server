@@ -1,5 +1,4 @@
 const {Log} = require('../../models');
-const {timeFormat} = require('../../utils/time');
 
 exports.logList = async(ctx) => {
   const {page} = ctx.query;

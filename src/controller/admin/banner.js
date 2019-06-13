@@ -1,11 +1,9 @@
 const { Banner } = require('../../models');
-const { creatToken, isPassToken } = require('../../utils/token');
 const config = require('config');
 
 exports.uploadBannner = async(ctx) => {
   let {access} = ctx.req.body;
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   let banner = new Banner({
     publisher: access,
     publisher_id: user._id,
@@ -17,8 +15,7 @@ exports.uploadBannner = async(ctx) => {
 
 exports.bannerList = async(ctx) => {
   let {access} = ctx.query;
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   const list = await Banner.find({
     publisher: access? access: user.access[0],
     publisher_id: user._id

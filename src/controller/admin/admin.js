@@ -1,5 +1,5 @@
 const { Admin, Recover } = require('../../models');
-const { creatToken, isPassToken } = require('../../utils/token');
+const { creatToken } = require('../../utils/token');
 
 exports.login = async(ctx) => {
   const {userName, password} = ctx.request.body;
@@ -10,8 +10,7 @@ exports.login = async(ctx) => {
 }
 
 exports.getAdminInfo = async(ctx) => {
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   let admin = await Admin.findOne({_id: user._id});
   if (JSON.stringify(admin) === '{}') return ctx.body = {StatusCode: 700002, msg: '用户已经不存在'};
   ctx.body = {StatusCode: 200000, admin}
@@ -36,8 +35,7 @@ exports.getAdminList = async(ctx) => {
   const currentPage = page? Number(page): 1;
   limit = limit? Number(limit): 100;
   const skipnum = (currentPage - 1) * limit;
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   const {access, _id} = user;
   let conf;
   if (access[0] === 'system_admin') conf = {};
@@ -70,8 +68,7 @@ exports.update = async(ctx) => {
 
 exports.delete = async(ctx) => {
   const {_id} = ctx.params;
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   await Admin.remove({_id});
   let recover = new Recover({
     deleteBy: user._id,

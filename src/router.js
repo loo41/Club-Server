@@ -3,22 +3,24 @@ const config = require('config');
 
 const { admin, active, Log, Mongo, Banner } = require('./controller');
 const { upload } = require('./utils/upload');
+// 验证权限
+const { isPassToken } = require('./utils/token');
 
 const router = new Router({prefix: '/'});
 
 router
       .post('admin/login', admin.login)
-      .get('admin/info', admin.getAdminInfo)
+      .get('admin/info', isPassToken, admin.getAdminInfo)
       .post('admin/register', admin.createAdmin)
-      .get('admin/list/:limit', admin.getAdminList)
+      .get('admin/list/:limit', isPassToken, admin.getAdminList)
       .put('admin/update', admin.update)
-      .delete('admin/delete/:_id', admin.delete)
+      .delete('admin/delete/:_id', isPassToken, admin.delete)
       
 router
-      .post('admin/active', active.registerActive)
-      .get('admin/active', active.getActiveList)
+      .post('admin/active', isPassToken, active.registerActive)
+      .get('admin/active', isPassToken, active.getActiveList)
       .put('admin/active', active.updateActive)
-      .delete('admin/active/:_id', active.delectActive)
+      .delete('admin/active/:_id', isPassToken, active.delectActive)
 
 router
       .get('admin/log', Log.logList)
@@ -30,7 +32,7 @@ router
       .delete('admin/backups/:_id/:path', Mongo.delectFile)
 
 router
-      .get('admin/banner', Banner.bannerList)
+      .get('admin/banner', isPassToken, Banner.bannerList)
       .delete('admin/banner/:_id', Banner.bannerDel)
       .put('admin/banner', Banner.updateBanner)
 
@@ -39,7 +41,7 @@ router
       .post('admin/upload', upload.single('head_thumb'), (ctx) => {
         ctx.body = {StatusCode: 200000, path: config.get('basePath') + '/' + ctx.req.file.filename}
       })
-      .post('admin/uploadBannerImg', upload.single('head_thumb'), Banner.uploadBannner)
+      .post('admin/uploadBannerImg', isPassToken, upload.single('head_thumb'), Banner.uploadBannner)
 
 
 module.exports = router

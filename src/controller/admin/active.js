@@ -1,11 +1,8 @@
 const { Active } = require('../../models');
-const { creatToken, isPassToken } = require('../../utils/token');
 
 
 exports.registerActive = async(ctx) => {
   const {title, brief, imageUrl, isSignInfo, list, status, limit} = ctx.request.body;
-  const user = await isPassToken(ctx);
-  if (!user) return;
   let active = new Active({
     title, brief, imageUrl, isSignInfo, list, status, limit, adminId: user._id
   });
@@ -18,8 +15,7 @@ exports.getActiveList = async(ctx) => {
   const currentPage = page? Number(page): 1;
   limit = limit? Number(limit): 100;
   const skipnum = (currentPage - 1) * limit;
-  const user = await isPassToken(ctx);
-  if (!user) return;
+  const user = ctx.user;
   let conf = {};
   if (access && access == 'admin') {
     conf.adminId = user._id
@@ -47,8 +43,6 @@ exports.updateActive = async(ctx) => {
 
 exports.delectActive = async(ctx) => {
   const {_id} = ctx.params;
-  const user = await isPassToken(ctx);
-  if (!user) return;
   await Active.remove({_id});
   ctx.body = {StatusCode: 200000, msg: '活动删除成功'}
 }
