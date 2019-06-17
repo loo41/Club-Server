@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const config = require('config');
 
-const { admin, active, Log, Mongo, Banner } = require('./controller');
+const { admin, active, Log, Mongo, Banner, Article, User, Config } = require('./controller');
 const { upload } = require('./utils/upload');
 // 验证权限
 const { isPassToken } = require('./utils/token');
@@ -35,6 +35,24 @@ router
       .get('admin/banner', isPassToken, Banner.bannerList)
       .delete('admin/banner/:_id', Banner.bannerDel)
       .put('admin/banner', Banner.updateBanner)
+
+
+router
+      .get('admin/article', Article.articleList)
+      .delete('admin/article/:_id', Article.delArticle)
+      .post('admin/article', isPassToken,  Article.createArticle)
+      .put('admin/article', Article.updateArticle)
+
+router
+      .get('admin/user', User.userList)
+      .put('admin/user', User.update)
+
+
+router
+      .get('admin/config', isPassToken, Config.configInfo)
+      .put('admin/config', Config.updateConfig)
+      .get('admin/globel_config', Config.getGlobelConfig)
+      .put('admin/globel_config', Config.putGlobelConfig)
 
 // 上传图像
 router

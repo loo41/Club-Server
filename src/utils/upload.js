@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
   filename: async function (req, file, cb) {
     let fileFormat = (file.originalname).split(".")  
     cb(null, Date.now() + 'Youngon' +"." + fileFormat[fileFormat.length - 1])
-  }  
+  }
 })  
 const upload = multer({ storage: storage })
 

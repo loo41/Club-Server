@@ -4,6 +4,10 @@ const Active = require('./active');
 const Log = require('./log');
 const Mongo = require('./mongo');
 const Banner = require('./banner');
+const Article = require('./article');
+const User = require('./user');
+const Apply = require('./apply');
+const Config = require('./config');
 
 
 module.exports = {
@@ -12,5 +16,9 @@ module.exports = {
   Active,
   Log,
   Mongo,
-  Banner
+  Banner,
+  Article,
+  User,
+  Apply,
+  Config
 }

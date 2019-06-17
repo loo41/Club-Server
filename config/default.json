@@ -4,5 +4,20 @@
   "port": "27017",
   "db": "zhaoxin",
   "secret": "Youngon",
-  "basePath": "http://127.0.0.1:3000"
+  "basePath": "http://127.0.0.1:3000",
+  "access": ["system_admin"],
+  "account": "youngon",
+  "password": "youngon",
+  "clubName": "TJCU-开发者联盟",
+  "head_thumb": "https://github.githubassets.com/images/icons/emoji/unicode/1f437.png",
+  "brief": "系统管理员由开发者组成，维护改系统正常运行",
+  "config": {
+    "imageSize": 2,
+    "changePower": false,
+    "mail": [{
+      "host": "",
+      "user": "",
+      "pass": ""
+    }]
+  }
 }

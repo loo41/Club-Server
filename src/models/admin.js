@@ -7,6 +7,7 @@ const Schema = moogose.Schema;
  *  @param {clubName} 社团名称
  *  @param {access} 管理员权限
  *  @param {visits} 访问次数
+ *  @param {brief} 社团简介
  *  @param {head_thumb} 头像
  *  @param {date} 创建日期
  *  @author {TCYong}
@@ -17,6 +18,7 @@ const AdminSchema = new Schema({
   password: String,
   clubName: String,
   access: Array,
+  brief: String,
   visits: {type: Number, default: 0},
   head_thumb: String,
   star: {type: Boolean, default: false},

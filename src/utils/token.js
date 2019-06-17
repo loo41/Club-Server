@@ -16,7 +16,7 @@ exports.isPassToken = async (ctx, next) => {
                 || ctx.header.token
                 || ctx.request.body.token;
     if (!token) {
-      ctx.body = {StatusCode: 700002, msg: '用户不存在'};
+      return ctx.body = {StatusCode: 700002, msg: '用户不存在'};
     }
     let user = jwt.decode(token, config.get('secret'), 'HS256');
     if (user.exp + (2 * 60 * 1000) < Date.now()) {

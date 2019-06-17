@@ -8,9 +8,16 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('koa-cors');
 const Globle = require('./middleware/globle');
+const Redis = require('ioredis');
 const error = require(`${path.resolve(__dirname, 'middleware/error')}`);
+const { sendMails } = require(`${path.resolve(__dirname, 'middleware/mail')}`);
 
 const app = new koa();
+const redis = new Redis();
+
+// 注册为全局方便调用
+global.redis = redis;
+global.sendMails = sendMails;
 
 mongoose.connect(`mongodb://${config.get('host')}:${config.get('port')}/${config.get('db')}`, {
   useNewUrlParser: true 
@@ -21,6 +28,7 @@ mongoose.set('useCreateIndex', true);
 
 // 全局初始化 管理员 文件夹 处理
 Globle.init()
+Globle.initCache()
 
 
 app

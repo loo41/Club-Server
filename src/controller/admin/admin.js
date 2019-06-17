@@ -1,4 +1,4 @@
-const { Admin, Recover } = require('../../models');
+const { Admin, Recover, Config } = require('../../models');
 const { creatToken } = require('../../utils/token');
 
 exports.login = async(ctx) => {
@@ -18,29 +18,32 @@ exports.getAdminInfo = async(ctx) => {
 
 
 exports.createAdmin = async(ctx) => {
-  const {access, account, password, clubName, head_thumb} = ctx.request.body;
+  const {access, account, password, clubName, head_thumb, brief} = ctx.request.body;
   const [isExisClub, isExisAcc] = await Promise.all([Admin.find({clubName}), Admin.find({account})]);
   if (isExisClub.length || isExisAcc.length) return ctx.body = {StatusCode: 700001, msg: '您注册的社团已经存在'};
   const admin = new Admin({
     access: [access], account, password,
-    clubName, head_thumb
+    clubName, head_thumb, brief
   });
   await admin.save();
-  ctx.body = {StatusCode: 200000, msg: '注册成功'};
+  ctx.body = {StatusCode: 200000, msg: '社团注册成功'};
+  let config = new Config({corporation_id: admin._id});
+  await config.save();
 }
 
 exports.getAdminList = async(ctx) => {
   let {page} = ctx.params;
   let {limit, content} = ctx.query;
-  const currentPage = page? Number(page): 1;
+  let currentPage = page? Number(page): 1;
   limit = limit? Number(limit): 100;
   const skipnum = (currentPage - 1) * limit;
   const user = ctx.user;
   const {access, _id} = user;
   let conf;
   if (access[0] === 'system_admin') conf = {};
-  if (access[0] === 'super_admin') conf = {access: { $in: ['super_admin', 'admin']}};
-  if (access[0] === 'admin') conf = {_id};
+  else if (access[0] === 'super_admin') conf = {access: { $in: ['super_admin', 'admin', 'user']}};
+  else if (access[0] === 'admin') conf = {_id};
+  else if (access[0] === 'user') conf = {_id};
   if (content) conf.clubName = {$regex: new RegExp(content, 'ig')};
   const list = await Admin
                       .find(conf)
@@ -59,11 +62,11 @@ exports.getAdminList = async(ctx) => {
 }
 
 exports.update = async(ctx) => {
-  const {_id, access, account, password, clubName, head_thumb, sort, star} = ctx.request.body;
+  const {_id, access, account, clubName, head_thumb, sort, star} = ctx.request.body;
   await Admin.update({_id}, {
-    access, account, password, clubName, head_thumb, sort, star
+    access, account, clubName, head_thumb, sort, star
   })
-  ctx.body = {StatusCode: 200000, msg: '更新成功'}
+  ctx.body = {StatusCode: 200000, msg: '社团更新成功'}
 }
 
 exports.delete = async(ctx) => {
@@ -73,8 +76,8 @@ exports.delete = async(ctx) => {
   let recover = new Recover({
     deleteBy: user._id,
     delete: _id,
-    des: '管理员被删除'
+    des: '社团管理员被删除'
   })
   await recover.save()
-  ctx.body = {StatusCode: 200000, msg: '管理员删除成功'}
+  ctx.body = {StatusCode: 200000, msg: '社团管理员删除成功'}
 }

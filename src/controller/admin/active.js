@@ -3,6 +3,7 @@ const { Active } = require('../../models');
 
 exports.registerActive = async(ctx) => {
   const {title, brief, imageUrl, isSignInfo, list, status, limit} = ctx.request.body;
+  const user = ctx.user
   let active = new Active({
     title, brief, imageUrl, isSignInfo, list, status, limit, adminId: user._id
   });
@@ -12,12 +13,12 @@ exports.registerActive = async(ctx) => {
 
 exports.getActiveList = async(ctx) => {
   let {page, limit, access, sort, content, searchIf} = ctx.query;
-  const currentPage = page? Number(page): 1;
+  let currentPage = page? Number(page): 1;
   limit = limit? Number(limit): 100;
   const skipnum = (currentPage - 1) * limit;
   const user = ctx.user;
   let conf = {};
-  if (access && access == 'admin') {
+  if (access && access == 'admin' || user.access[0] == 'user') {
     conf.adminId = user._id
   };
   if (content) conf.title = {$regex: new RegExp(content, 'ig')};
@@ -38,7 +39,7 @@ exports.getActiveList = async(ctx) => {
 exports.updateActive = async(ctx) => {
   const {_id, title, brief, imageUrl, isSignInfo, list, status, star, sort, limit} = ctx.request.body;
   await Active.update({_id}, { title, brief, imageUrl, isSignInfo, list, status, star, sort, limit});
-  ctx.body = {StatusCode: 200000, msg: '更新成功'}
+  ctx.body = {StatusCode: 200000, msg: '活动更新成功'}
 }
 
 exports.delectActive = async(ctx) => {

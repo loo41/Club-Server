@@ -5,15 +5,14 @@ const Config = require('config')
 const fs = require('fs')
 
 exports.dbList = async(ctx) => {
-  const {page} = ctx.query
-  const pageSize = 10
-  const currentPage = page
-  const skipnum = (currentPage - 1) * pageSize
+  let {page, limit} = ctx.query
+  let currentPage = page? Number(page): 1
+  const skipnum = (currentPage - 1) * limit
   let list = await Mongo
                         .find({})
                         .sort({_id: -1})
                         .skip(skipnum)
-                        .limit(pageSize)
+                        .limit(limit? Number(limit): 1000)
   let total = await Mongo.count()
   ctx.body = {StatusCode: 200000, list, total}
 }
