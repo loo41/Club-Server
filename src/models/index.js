@@ -8,6 +8,8 @@ const Article = require('./article');
 const User = require('./user');
 const Apply = require('./apply');
 const Config = require('./config');
+const Message = require('./message');
+const Sign = require('./sign');
 
 
 module.exports = {
@@ -20,5 +22,7 @@ module.exports = {
   Article,
   User,
   Apply,
-  Config
+  Config,
+  Message,
+  Sign
 }

@@ -4,7 +4,7 @@
   "port": "27017",
   "db": "zhaoxin",
   "secret": "Youngon",
-  "basePath": "http://127.0.0.1:3000",
+  "basePath": "http://sign-admin.tianchenyong.top",
   "access": ["system_admin"],
   "account": "youngon",
   "password": "youngon",
@@ -15,5 +15,6 @@
     "imageSize": 2,
     "changePower": false,
     "mail": []
-  }
+  },
+  "notice": { "isOpen": false, "content": "" }
 }

@@ -1,4 +1,5 @@
 const { admin, active, Log, Mongo, Banner, Article, User, Config } = require('./admin');
+const { Club, Activity, FrontUser } = require('./client');
 
 module.exports = {
   admin,
@@ -8,5 +9,8 @@ module.exports = {
   Banner,
   Article,
   User,
-  Config
+  Config,
+  Club,
+  Activity,
+  FrontUser
 }

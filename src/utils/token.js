@@ -2,9 +2,9 @@ const jwt = require('jwt-simple');
 const config = require('config');
 const moment = require('moment');
 
-exports.creatToken = async (Options) => {
+exports.creatToken = async (Options, time) => {
   const times = moment().add(2, 'hours').valueOf();
-  Options.exp = times;
+  Options.exp = time || times;
   Options.password = 'noPassword';
   return jwt.encode(Options, config.get('secret'));
 }
@@ -19,14 +19,14 @@ exports.isPassToken = async (ctx, next) => {
       return ctx.body = {StatusCode: 700002, msg: '用户不存在'};
     }
     let user = jwt.decode(token, config.get('secret'), 'HS256');
-    if (user.exp + (2 * 60 * 1000) < Date.now()) {
-      ctx.body = {StatusCode: 700002, msg: 'token过期'};
+    if ((ctx.request.url.indexOf('admin') !== -1 && user.exp + (2 * 60 * 1000) < Date.now() ||
+    ctx.request.url.indexOf('user') !== -1 && user.exp + (7 * 24 * 60 * 1000) < Date.now())) {
+      return ctx.body = {StatusCode: 700002, msg: 'token过期'};
     }
     ctx.user = user;
     await next();
   } catch (e) {
     console.log(e)
-    ctx.body = {StatusCode: 700002, msg: '用户不存在'};
     throw(e);
   }
 }

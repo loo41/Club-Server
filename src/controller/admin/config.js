@@ -26,6 +26,5 @@ exports.putGlobelConfig = async(ctx) => {
 exports.getGlobelConfig = async(ctx) => {
   const redis = global.redis;
   let result = await redis.get('config')
-  console.log(result)
   ctx.body = {StatusCode: 200000, config: JSON.parse(result)};
 }

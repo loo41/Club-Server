@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const config = require('config');
 
-const { admin, active, Log, Mongo, Banner, Article, User, Config } = require('./controller');
+const { admin, active, Log, Mongo, Banner, Article, User, Config, Club, Activity, FrontUser } = require('./controller');
 const { upload } = require('./utils/upload');
 // 验证权限
 const { isPassToken } = require('./utils/token');
@@ -61,6 +61,27 @@ router
       })
       .post('admin/uploadBannerImg', isPassToken, upload.single('head_thumb'), Banner.uploadBannner)
 
+
+
+
+// 前端
+
+router
+      .get('user/globel_config', Config.getGlobelConfig)
+      
+router
+      .get('user/clubName', Club.getClubList)
+      .get('user/banner', Club.bannerList)
+
+router
+      .get('user/activity', Activity.activityList)
+
+router
+      .post('user/login', FrontUser.login)
+      .get('user/info', isPassToken, FrontUser.getUserInfo)
+      .post('user/message', isPassToken, FrontUser.message)
+      .get('user/message', FrontUser.messageList)
+      .post('user/sign', isPassToken, FrontUser.isSign)
 
 module.exports = router
 

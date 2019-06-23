@@ -12,7 +12,7 @@ exports.login = async(ctx) => {
 exports.getAdminInfo = async(ctx) => {
   const user = ctx.user;
   let admin = await Admin.findOne({_id: user._id});
-  if (JSON.stringify(admin) === '{}') return ctx.body = {StatusCode: 700002, msg: '用户已经不存在'};
+  if (JSON.stringify(admin) === '{}') return ctx.body = {StatusCode: 700002, msg: '用户不存在'};
   ctx.body = {StatusCode: 200000, admin}
 }
 
@@ -62,9 +62,9 @@ exports.getAdminList = async(ctx) => {
 }
 
 exports.update = async(ctx) => {
-  const {_id, access, account, clubName, head_thumb, sort, star} = ctx.request.body;
+  const {_id, access, account, brief, clubName, head_thumb, sort, star} = ctx.request.body;
   await Admin.update({_id}, {
-    access, account, clubName, head_thumb, sort, star
+    access, account, clubName, head_thumb, sort, star, brief
   })
   ctx.body = {StatusCode: 200000, msg: '社团更新成功'}
 }

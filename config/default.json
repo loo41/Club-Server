@@ -18,6 +18,8 @@
       "host": "",
       "user": "",
       "pass": ""
-    }]
+    }],
+    "notice": { "isOpen": false, "content": "" },
+    "video": { "isOpen": false, "url": "" }
   }
 }

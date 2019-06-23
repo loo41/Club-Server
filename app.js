@@ -15,7 +15,7 @@ const { sendMails } = require(`${path.resolve(__dirname, 'middleware/mail')}`);
 const app = new koa();
 const redis = new Redis();
 
-// 注册为全局方便调用
+// 挂载为全局方便调用
 global.redis = redis;
 global.sendMails = sendMails;
 
@@ -26,7 +26,7 @@ mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 
 
-// 全局初始化 管理员 文件夹 处理
+// 全局初始化 管理员 文件夹 缓存
 Globle.init()
 Globle.initCache()
 
